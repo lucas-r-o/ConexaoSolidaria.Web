@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+  /* Purple palette - 3 tones */
+  --purple-light: #b399d4;
+  --purple-mid: #7e57c2;
+  --purple-dark: #4a2e83;
+  /* Supporting neutrals */
+  --purple-bg: #f5f2fa;
+  --purple-text: #2c1a4d;
+  /* Subtle gradient using the 3 tones */
+  --purple-gradient: linear-gradient( 135deg, var(--purple-light) 0%, var(--purple-mid) 50%, var(--purple-dark) 100% );
+}

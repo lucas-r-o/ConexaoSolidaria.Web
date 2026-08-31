@@ -1,0 +1,75 @@
+# Visual Studio / .NET
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build outputs
+**/bin/
+**/obj/
+**/obj/**Debug**/
+**/bin/**Debug**/
+publish/
+*.dll
+*.exe
+*.pdb
+
+# Node / JS
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Angular / frontend caches
+/.angular/cache
+/dist
+/out
+/out-tsc
+/build
+/tmp
+/.parcel-cache
+/.next
+/.nuxt
+
+# IDEs and editors
+.idea/
+*.sublime-workspace
+*.sublime-project
+.project
+.classpath
+.settings/
+*.launch
+
+# Logs, coverage and caches
+*.log
+logs/
+coverage/
+.cache
+.cache/
+
+# Environment / secrets
+.env
+.env.*
+secrets.json
+appsettings*.json
+
+# System files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Misc / language-specific
+__pycache__/
+*.pyc
+.terraform/
+terraform.tfstate*
+.venv/
+venv/
+
+# Keys / certificates
+*.pem
+*.key

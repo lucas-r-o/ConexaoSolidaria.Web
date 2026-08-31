@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ConexaoSolidaria.Web/ConexaoSolidaria.Web.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+</Solution>
