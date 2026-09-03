@@ -30,7 +30,7 @@ export class Login {
       return;
     }
 
-    this.http.post<{ token: string }>('https://your-api.com/auth/login', this.loginForm.value)
+    this.http.post<{ token: string }>(`${environment.apiUrl}/auth/login`, this.loginForm.value, { responseType: 'text' })
       .subscribe({
         next: (response) => {
           localStorage.setItem('token', response.token);
