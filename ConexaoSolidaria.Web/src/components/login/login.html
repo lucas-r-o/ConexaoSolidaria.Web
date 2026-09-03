@@ -41,10 +41,8 @@
     </div>
 
     <!-- API Error Message -->
-    @if (errorMessage) {
-    <div class="error api-error">
-      {{ errorMessage }}
-    </div>
+    @if (errorMessage()) {
+    <p class="error api-error">{{ errorMessage() }}</p>
     }
 
     <!-- Submit Button -->

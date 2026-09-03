@@ -1,17 +1,18 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrls: ['./login.css'] 
 })
-export class Login{
+export class Login {
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
   private router = inject(Router);
@@ -21,7 +22,7 @@ export class Login{
     password: ['', [Validators.required]]
   });
 
-  errorMessage: string | null = null;
+  errorMessage = signal<string | null>(null);
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
@@ -32,12 +33,11 @@ export class Login{
     this.http.post<{ token: string }>('https://your-api.com/auth/login', this.loginForm.value)
       .subscribe({
         next: (response) => {
-          // e.g. save token
           localStorage.setItem('token', response.token);
           this.router.navigate(['/dashboard']);
         },
-        error: (err) => {
-          this.errorMessage = err.error?.message ?? 'Login failed. Please try again.';
+        error: (err: any) => {
+          this.errorMessage.set(err?.error ?? 'Login failed. Please try again.');
         }
       });
   }
