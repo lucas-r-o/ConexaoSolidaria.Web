@@ -1,0 +1,75 @@
+<header>
+  <div class="wrap header-row">
+    <div class="wordmark">Conexão<span class="accent">Solidária</span></div>
+    <nav>
+      <a href="#campanhas">Campanhas</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#entrar">Entrar</a>
+    </nav>
+  </div>
+</header>
+
+<section class="wrap hero">
+  <h1>Ajuda que chega antes da urgência virar <em>tarde demais</em>.</h1>
+  <p>Cada campanha aqui foi verificada e acompanhada até o fim. Escolha uma causa, doe o quanto puder, veja o resultado.</p>
+  <button class="cta">Ver campanhas ativas</button>
+</section>
+
+<section class="wrap impact">
+  <div class="impact-figure">
+    <span class="num">{{ totalArrecadado() | currency:'BRL':'symbol':'1.0-0':'pt-BR' }}</span>
+    <span class="label">arrecadados este ano</span>
+  </div>
+  <div class="impact-figure">
+    <span class="num">{{ campanhas().length }}</span>
+    <span class="label">campanhas ativas</span>
+  </div>
+</section>
+
+<section class="wrap campaigns" id="campanhas">
+  <div class="section-heading">
+    <h2>Campanhas ativas</h2>
+    @if (carregando()) {
+    <span>{{ campanhas().length }} no momento</span>
+    }
+  </div>
+  @if (!carregando()) {
+  <div class="estado">Carregando campanhas...</div>
+  }
+  @if (erro()) {
+  <div class="estado">Não foi possível carregar as campanhas agora.</div>
+  }
+  @if (!carregando && !erro && campanhas.length === 0) {
+  <div class="estado">Nenhuma campanha ativa no momento.</div>
+  }
+
+  @if (!carregando() && !erro()) {
+  <div class="campaign-list">
+    @for (c of campanhas(); track c.id) {
+    <div class="campaign">
+      <h3 class="campaign-title">{{ c.titulo }}</h3>
+
+      <div class="campaign-progress-track">
+        <div class="campaign-progress-fill"
+             [style.width.%]="progresso(c)"></div>
+      </div>
+
+      <div class="campaign-meta">
+        <span>
+          <strong>{{ c.valorTotalArrecadado | currency:'BRL':'symbol':'1.0-0':'pt-BR' }}</strong>
+          de {{ c.metaFinanceira | currency:'BRL':'symbol':'1.0-0':'pt-BR' }}
+        </span>
+        <span>{{ progresso(c) }}% da meta</span>
+      </div>
+
+      <button class="campaign-action">Doar</button>
+    </div>
+    }
+  </div>
+  }
+
+</section>
+
+<footer class="wrap">
+  ConexãoSolidária — plataforma de doações
+</footer>
