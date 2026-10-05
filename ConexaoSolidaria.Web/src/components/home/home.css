@@ -1,7 +1,9 @@
 :host {
   display: block;
-  font-family: 'Work Sans', sans-serif;
+  min-height: 100vh;
+  font-family: var(--font-sans);
   color: var(--purple-text);
+  background: var(--color-page);
 }
 
 * {
@@ -15,26 +17,26 @@ a {
 .wrap {
   max-width: 880px;
   margin: 0 auto;
-  padding: 0 28px;
+  padding: 0 var(--space-13);
 }
 
 /* ---------- Header ---------- */
 header {
-  padding: 28px 0 0;
+  padding: var(--space-13) 0 0;
 }
 
 .header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba(74, 46, 131, 0.15);
+  padding-bottom: var(--space-9);
+  border-bottom: 1px solid var(--color-border-subtle);
 }
 
 .wordmark {
-  font-family: 'Newsreader', serif;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-family: var(--font-serif);
+  font-size: var(--font-size-wordmark);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 0.01em;
 }
 
@@ -44,8 +46,8 @@ header {
 
 nav {
   display: flex;
-  gap: 28px;
-  font-size: 0.95rem;
+  gap: var(--space-13);
+  font-size: var(--font-size-body);
 }
 
   nav a {
@@ -59,16 +61,16 @@ nav {
 
 /* ---------- Hero ---------- */
 .hero {
-  padding: 72px 0 56px;
+  padding: var(--space-24) 0 var(--space-20);
   max-width: 620px;
 }
 
   .hero h1 {
-    font-family: 'Newsreader', serif;
-    font-weight: 500;
-    font-size: clamp(2.1rem, 4vw, 3rem);
+    font-family: var(--font-serif);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-hero);
     line-height: 1.15;
-    margin: 0 0 20px;
+    margin: 0 0 var(--space-9);
   }
 
     .hero h1 em {
@@ -77,25 +79,25 @@ nav {
     }
 
   .hero p {
-    font-size: 1.05rem;
+    font-size: var(--font-size-lead);
     line-height: 1.6;
-    color: rgba(44, 26, 77, 0.75);
-    margin: 0 0 32px;
+    color: var(--color-text-muted-75);
+    margin: 0 0 var(--space-14);
     max-width: 46ch;
   }
 
 .cta {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-4);
   background: var(--purple-gradient);
-  color: #fff;
+  color: var(--color-white);
   border: none;
-  padding: 13px 24px;
-  border-radius: 999px;
-  font-family: 'Work Sans', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 500;
+  padding: var(--space-6) var(--space-11);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
 }
 
@@ -106,128 +108,130 @@ nav {
 /* ---------- Impact strip ---------- */
 .impact {
   display: flex;
-  gap: 48px;
-  padding: 28px 0 60px;
-  border-bottom: 1px solid rgba(74, 46, 131, 0.15);
+  gap: var(--space-19);
+  padding: var(--space-13) 0 var(--space-21);
+  border-bottom: 1px solid var(--color-border-subtle);
 }
 
 .impact-figure .num {
-  font-family: 'Newsreader', serif;
-  font-size: 1.9rem;
-  font-weight: 500;
+  font-family: var(--font-serif);
+  font-size: var(--font-size-metric);
+  font-weight: var(--font-weight-medium);
   color: var(--purple-dark);
   display: block;
 }
 
 .impact-figure .label {
-  font-size: 0.85rem;
-  color: rgba(44, 26, 77, 0.6);
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted-60);
 }
 
 /* ---------- Campaigns ---------- */
 .campaigns {
-  padding: 56px 0 40px;
+  padding: var(--space-20) 0 var(--space-16);
 }
 
 .section-heading {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2);
 }
 
   .section-heading h2 {
-    font-family: 'Newsreader', serif;
-    font-weight: 500;
-    font-size: 1.55rem;
+    font-family: var(--font-serif);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-section);
     margin: 0;
   }
 
   .section-heading span {
-    font-size: 0.9rem;
-    color: rgba(44, 26, 77, 0.55);
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-muted-55);
   }
 
 .estado {
-  padding: 32px 0;
-  color: rgba(44, 26, 77, 0.6);
-  font-size: 0.95rem;
+  padding: var(--space-14) 0;
+  color: var(--color-text-muted-60);
+  font-size: var(--font-size-body);
 }
 
 .campaign-list {
-  margin-top: 24px;
+  margin-top: var(--space-11);
+  padding: 0;
+  list-style: none;
 }
 
 .campaign {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  gap: 8px 24px;
-  padding: 26px 0;
-  border-bottom: 1px solid rgba(74, 46, 131, 0.15);
+  gap: var(--space-2) var(--space-11);
+  padding: var(--space-12) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
 }
 
 .campaign-title {
-  font-family: 'Newsreader', serif;
-  font-size: 1.2rem;
-  font-weight: 500;
-  margin: 0 0 12px;
+  font-family: var(--font-serif);
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-medium);
+  margin: 0 0 var(--space-5);
   grid-column: 1 / 2;
 }
 
 .campaign-progress-track {
   grid-column: 1 / 2;
   height: 6px;
-  border-radius: 999px;
-  background: rgba(126, 87, 194, 0.15);
+  border-radius: var(--radius-pill);
+  background: var(--color-progress-track);
   overflow: hidden;
 }
 
 .campaign-progress-fill {
   height: 100%;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--purple-gradient);
 }
 
 .campaign-meta {
   grid-column: 1 / 2;
   display: flex;
-  gap: 18px;
-  margin-top: 12px;
-  font-size: 0.85rem;
-  color: rgba(44, 26, 77, 0.65);
+  gap: var(--space-8);
+  margin-top: var(--space-5);
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted-65);
 }
 
   .campaign-meta strong {
     color: var(--purple-dark);
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
   }
 
 .campaign-action {
   grid-column: 2 / 3;
   grid-row: 1 / 4;
   align-self: center;
-  background: #fff;
+  background: var(--color-white);
   border: 1.5px solid var(--purple-mid);
   color: var(--purple-dark);
-  padding: 10px 20px;
-  border-radius: 999px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  padding: var(--space-4) var(--space-9);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   white-space: nowrap;
 }
 
   .campaign-action:hover {
     background: var(--purple-mid);
-    color: #fff;
+    color: var(--color-white);
   }
 
 /* ---------- Footer ---------- */
 footer {
-  padding: 40px 0 60px;
-  font-size: 0.85rem;
-  color: rgba(44, 26, 77, 0.55);
+  padding: var(--space-16) 0 var(--space-21);
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted-55);
 }
 
 @media (max-width: 560px) {
@@ -235,15 +239,19 @@ footer {
     grid-template-columns: 1fr;
   }
 
+  .hero h1 {
+    font-size: var(--font-size-hero-mobile);
+  }
+
   .campaign-action {
     grid-column: 1;
     grid-row: auto;
-    margin-top: 16px;
+    margin-top: var(--space-7);
     justify-self: start;
   }
 
   .impact {
     flex-wrap: wrap;
-    gap: 28px;
+    gap: var(--space-13);
   }
 }
