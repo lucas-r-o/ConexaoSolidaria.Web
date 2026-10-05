@@ -1,6 +1,9 @@
+import { Injectable } from '@angular/core';
+
+@Injectable({ providedIn: 'root' })
 export class AuthService {
 
-isloggedIn(): boolean {
+  isLoggedIn(): boolean {
     const token = localStorage.getItem('token');
 
     return !!token;
@@ -10,4 +13,7 @@ isloggedIn(): boolean {
     localStorage.removeItem('token');
   }
 
+  setToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
 }
