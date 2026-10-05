@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, timer, EMPTY } from 'rxjs';
 import { switchMap, catchError, shareReplay, retry } from 'rxjs/operators';
 import { CampanhaPublicaDTO } from './CampanhaPublicaDTO';
+import { CriarCampanhaDTO } from './CriarCampanhaDTO';
 import { environment } from '../../environments/environment';
 
 const POLL_INTERVAL_MS = 15_000;
@@ -24,5 +25,12 @@ export class CampanhaService {
       ),
       shareReplay({ bufferSize: 1, refCount: true })
     );
+  }
+
+  criar(dto: CriarCampanhaDTO): Observable<unknown> {
+    const token = localStorage.getItem('token');
+    const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+
+    return this.http.post<unknown>(`${environment.apiUrl}/campanhas/criar`, dto, { headers });
   }
 }

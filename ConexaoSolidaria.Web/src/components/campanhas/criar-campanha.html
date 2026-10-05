@@ -1,0 +1,84 @@
+<main class="create-page">
+  <header class="page-header">
+    <a class="wordmark" routerLink="/">Conexão<span>Solidária</span></a>
+    <a class="back-link" routerLink="/">Voltar às campanhas</a>
+  </header>
+
+  <section class="form-section" aria-labelledby="page-title">
+    <p class="eyebrow">GESTÃO DE CAMPANHAS</p>
+    <h1 id="page-title">Uma nova causa começa aqui.</h1>
+    <p class="intro">Conte às pessoas o que precisa ser feito e qual valor fará essa mudança acontecer.</p>
+
+    <form [formGroup]="formulario" (ngSubmit)="criar()" novalidate>
+      <div class="field">
+        <label for="titulo">Título</label>
+        <input id="titulo" type="text" formControlName="titulo" maxlength="100" autocomplete="off"
+               [attr.aria-invalid]="formulario.controls.titulo.touched && formulario.controls.titulo.invalid"
+               aria-describedby="titulo-ajuda titulo-erro" />
+        <div class="field-footnote">
+          <span id="titulo-ajuda">Dê um nome claro à campanha.</span>
+          <span>{{ formulario.controls.titulo.value.length }}/100</span>
+        </div>
+        @if (formulario.controls.titulo.touched && formulario.controls.titulo.errors) {
+          <p class="field-error" id="titulo-erro" role="alert">
+            @if (formulario.controls.titulo.errors['required']) { Informe o título da campanha. }
+            @if (formulario.controls.titulo.errors['maxlength']) { Use no máximo 100 caracteres. }
+            @if (formulario.controls.titulo.errors['pattern']) { O título não pode conter apenas espaços. }
+          </p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="descricao">Descrição</label>
+        <textarea id="descricao" rows="5" formControlName="descricao" maxlength="500"
+                  [attr.aria-invalid]="formulario.controls.descricao.touched && formulario.controls.descricao.invalid"
+                  aria-describedby="descricao-ajuda descricao-erro"></textarea>
+        <div class="field-footnote">
+          <span id="descricao-ajuda">Explique a necessidade e o impacto da arrecadação.</span>
+          <span>{{ formulario.controls.descricao.value.length }}/500</span>
+        </div>
+        @if (formulario.controls.descricao.touched && formulario.controls.descricao.errors) {
+          <p class="field-error" id="descricao-erro" role="alert">
+            @if (formulario.controls.descricao.errors['required']) { Informe a descrição da campanha. }
+            @if (formulario.controls.descricao.errors['maxlength']) { Use no máximo 500 caracteres. }
+            @if (formulario.controls.descricao.errors['pattern']) { A descrição não pode conter apenas espaços. }
+          </p>
+        }
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label for="metaFinanceira">Meta financeira</label>
+          <div class="money-input">
+            <span aria-hidden="true">R$</span>
+            <input id="metaFinanceira" type="number" formControlName="metaFinanceira" min="0.01" step="0.01"
+                   inputmode="decimal"
+                   [attr.aria-invalid]="formulario.controls.metaFinanceira.touched && formulario.controls.metaFinanceira.invalid"
+                   aria-describedby="meta-ajuda meta-erro" />
+          </div>
+          <span class="field-footnote" id="meta-ajuda">O valor precisa ser maior que zero.</span>
+          @if (formulario.controls.metaFinanceira.touched && formulario.controls.metaFinanceira.invalid) {
+            <p class="field-error" id="meta-erro" role="alert">Informe uma meta maior que R$ 0,00.</p>
+          }
+        </div>
+
+        <div class="field">
+          <label for="dataFim">Data de encerramento <span class="optional">Opcional</span></label>
+          <input id="dataFim" type="date" formControlName="dataFim" />
+          <span class="field-footnote">Deixe em branco para não definir uma data.</span>
+        </div>
+      </div>
+
+      @if (sucesso()) {
+        <p class="notice success" role="status">Campanha criada. Ela já pode ser consultada pela plataforma.</p>
+      }
+      @if (erro()) {
+        <p class="notice error" role="alert">{{ erro() }}</p>
+      }
+
+      <button class="submit-button" type="submit" [disabled]="formulario.invalid || enviando()">
+        {{ enviando() ? 'Criando campanha...' : 'Criar campanha' }}
+      </button>
+    </form>
+  </section>
+</main>
