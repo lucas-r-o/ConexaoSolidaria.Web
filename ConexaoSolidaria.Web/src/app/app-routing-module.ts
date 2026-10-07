@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { Login } from '../components/login/login';
 import { Home } from '../components/home/home';
 import { CriarCampanha } from '../components/campanhas/criar-campanha';
+import { AtualizarCampanha } from '../components/campanhas/atualizar-campanha';
 import { AuthGuard } from '../services/auth/authGuard';
 
 const routes: Routes = [
@@ -13,6 +14,16 @@ const routes: Routes = [
   {
     path: "campanhas/criar",
     component: CriarCampanha,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "campanhas/atualizar",
+    component: AtualizarCampanha,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "campanhas/atualizar/:id",
+    component: AtualizarCampanha,
     canActivate: [AuthGuard]
   },
   {
