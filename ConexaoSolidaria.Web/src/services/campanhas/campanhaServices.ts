@@ -1,10 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, timer, EMPTY } from 'rxjs';
-import { switchMap, catchError, shareReplay, retry } from 'rxjs/operators';
+import { switchMap, catchError, shareReplay, retry, map } from 'rxjs/operators';
 import { CampanhaPublicaDTO } from './CampanhaPublicaDTO';
 import { CriarCampanhaDTO } from './CriarCampanhaDTO';
 import { environment } from '../../environments/environment';
+import { AtualizarCampanhaDTO } from './AtualizarCampanhaDTO';
 
 const POLL_INTERVAL_MS = 15_000;
 
@@ -25,6 +26,14 @@ export class CampanhaService {
       ),
       shareReplay({ bufferSize: 1, refCount: true })
     );
+  }
+
+  getCampanha(id: string): Observable<CampanhaPublicaDTO> {
+    return this.http.get<CampanhaPublicaDTO>(`${environment.apiUrl}/campanhas/${id}`);
+  }
+
+  updateCampanha(id: string, campanha: AtualizarCampanhaDTO): Observable<CampanhaPublicaDTO> {
+    return this.http.put<CampanhaPublicaDTO>(`${environment.apiUrl}/campanhas/${id}`, campanha);
   }
 
   criar(dto: CriarCampanhaDTO): Observable<unknown> {
