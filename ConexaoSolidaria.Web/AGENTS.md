@@ -54,6 +54,7 @@ Stack: Angular <version> + TypeScript
 ## Rules
 - Do not commit secrets or `.env` files; the front-end bundle is public
 - Do not edit CI workflows, Dockerfiles, or migrations without coordinating with maintainers.
+- Commits only need to be called can when explicitly requested.
 - Run lint, tests, and build before finishing a change
 - Add or update tests for new behavior
 - Follow existing patterns and naming before introducing new ones
