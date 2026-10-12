@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, DestroyRef, inject, computed, signal } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CampanhaPublicaDTO } from '../../services/campanhas/CampanhaPublicaDTO';
 import { CampanhaService } from '../../services/campanhas/campanhaServices';
@@ -7,7 +8,7 @@ import { CampanhaService } from '../../services/campanhas/campanhaServices';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe],
+  imports: [CommonModule, CurrencyPipe, RouterLink],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

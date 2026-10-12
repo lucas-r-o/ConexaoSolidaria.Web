@@ -4,12 +4,18 @@ import { Login } from '../components/login/login';
 import { Home } from '../components/home/home';
 import { CriarCampanha } from '../components/campanhas/criar-campanha';
 import { AtualizarCampanha } from '../components/campanhas/atualizar-campanha';
+import { Doar } from '../components/doacoes/doar';
 import { AuthGuard } from '../services/auth/authGuard';
 
 const routes: Routes = [
   {
     path: "login",
     component: Login
+  },
+  {
+    path: "doar",
+    component: Doar,
+    canActivate: [AuthGuard]
   },
   {
     path: "campanhas/criar",

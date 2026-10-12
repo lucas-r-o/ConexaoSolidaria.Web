@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../../services/auth/AuthService';
 
@@ -17,6 +17,7 @@ export class Login {
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private authService = inject(AuthService);
 
   loginForm: FormGroup = this.fb.group({
@@ -42,6 +43,12 @@ export class Login {
           }
 
           this.authService.setToken(trimmedToken);
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+          if (returnUrl?.startsWith('/') && !returnUrl.startsWith('//')) {
+            this.router.navigateByUrl(returnUrl);
+            return;
+          }
+
           this.router.navigate(['/']);
         },
         error: (error: unknown) => {

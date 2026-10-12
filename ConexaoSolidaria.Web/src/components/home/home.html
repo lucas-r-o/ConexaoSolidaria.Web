@@ -3,8 +3,8 @@
     <div class="wordmark">Conexão<span class="accent">Solidária</span></div>
     <nav>
       <a href="#sobre">Sobre</a>
-      <a href="/campanhas/criar">Criar campanha</a>
-      <a href="/login">Entrar</a>
+      <a routerLink="/campanhas/criar">Criar campanha</a>
+      <a routerLink="/login">Entrar</a>
     </nav>
   </div>
 </header>
@@ -13,7 +13,7 @@
 <section class="wrap hero">
   <h1>Ajuda que chega antes da urgência virar <em>tarde demais</em>.</h1>
   <p>Cada campanha aqui foi verificada e acompanhada até o fim. Escolha uma causa, doe o quanto puder, veja o resultado.</p>
-  <button class="cta">Ver campanhas ativas</button>
+  <a class="cta" href="#campanhas">Ver campanhas ativas</a>
 </section>
 
 <section class="wrap impact">
@@ -63,7 +63,12 @@
         <span>{{ progresso(c) }}% da meta</span>
       </div>
 
-      <button class="campaign-action">Doar</button>
+      <a
+        class="campaign-action"
+        [routerLink]="['/doar']"
+        [queryParams]="{ campanha: c.id }"
+        [attr.aria-label]="'Doar para ' + c.titulo"
+      >Doar</a>
     </li>
     }
   </ul>

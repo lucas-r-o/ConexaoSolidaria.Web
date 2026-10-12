@@ -99,6 +99,7 @@ nav {
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
+  text-decoration: none;
 }
 
   .cta:hover {
@@ -208,6 +209,9 @@ nav {
   }
 
 .campaign-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   grid-column: 2 / 3;
   grid-row: 1 / 4;
   align-self: center;
@@ -220,6 +224,7 @@ nav {
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   white-space: nowrap;
+  text-decoration: none;
 }
 
   .campaign-action:hover {
