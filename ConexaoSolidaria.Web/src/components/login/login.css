@@ -92,3 +92,20 @@ button[type="submit"] {
     cursor: not-allowed;
     opacity: 0.6;
   }
+
+.register-link {
+  margin: var(--space-9) 0 0;
+  color: var(--color-text-muted-65);
+  font-size: var(--font-size-body-sm);
+  text-align: center;
+}
+
+.register-link a {
+  color: var(--purple-dark);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}

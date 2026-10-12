@@ -6,11 +6,16 @@ import { CriarCampanha } from '../components/campanhas/criar-campanha';
 import { AtualizarCampanha } from '../components/campanhas/atualizar-campanha';
 import { Doar } from '../components/doacoes/doar';
 import { AuthGuard } from '../services/auth/authGuard';
+import { Cadastro } from '../components/cadastro/cadastro';
 
 const routes: Routes = [
   {
     path: "login",
     component: Login
+  },
+  {
+    path: "cadastro",
+    component: Cadastro
   },
   {
     path: "doar",

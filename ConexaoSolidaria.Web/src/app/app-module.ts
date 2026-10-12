@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Login } from '../components/login/login';
+import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { Login } from '../components/login/login';
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
+    provideHttpClient(),
   ],
   bootstrap: [App]
 })
