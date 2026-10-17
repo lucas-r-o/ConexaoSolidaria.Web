@@ -1,79 +1,52 @@
-# Conexão Solidaria
+# Frontend Project Guidance
 
 ## Project
-Angular front-end that consumes the ConexaoSolidaria API. It has no backend logic.
-Project file: `ConexaoSolidaria.Web/ConexaoSolidaria.Web.esproj`
-Stack: Angular <version> + TypeScript
 
-## API
-- The API lives in a separate repository and owns the contract.
-- Base URL is configured in `<src/environments/environment.ts>`. Never hardcode URLs in code.
-- All HTTP calls go through services in `src/app/core/` or `src/app/features/<feature>/services/`. No `HttpClient` in components.
-- Auth: <e.g. JWT stored in ..., attached by an HTTP interceptor>
-- Do not invent endpoints or change DTO shapes. Ask if the contract is unclear.
+- This project is the Angular frontend for the ConexaoSolidaria API.
+- Angular and TypeScript versions are defined in `package.json`.
+- The API is maintained in a separate repository and owns the HTTP contract.
 
-## Related services
-- The Worker is a separate microservice maintained in another repository. It consumes events published by this API.
-- This API publishes events to RabbitMQ (via MassTransit). Do not change event contracts (message classes) without verifying Worker compatibility.
+## API and security
 
-## Progressive Documentation Loading
+- Configure the API base URL in `src/environments/`; never hardcode service URLs.
+- Make HTTP requests from services under `src/services/`, not from components.
+- Do not invent endpoints or change request/response shapes without confirming the API contract.
+- Keep API wire-format keys, claim values, and endpoint paths unchanged, even when their names are Portuguese. Use English for frontend identifiers and map at the service boundary if internal models need different names.
+- The authentication service stores the JWT in local storage under `token`. Do not treat client-side guards as a substitute for API authorization.
+- Do not edit CI workflows or backend infrastructure from this frontend project.
 
-**CRITICAL**: Only load documents relevant to your current task. Do NOT load all documentation at once.
+## TypeScript and Angular conventions
 
-## Quick Reference by Task Type
-
-| Task Type | Primary doc | Notes |
-|-|-|-|
-| New Angular template | angular-template skill | Auto-triggered |
+- Use kebab-case filenames with Angular suffixes: `.component.ts`, `.service.ts`, `.guard.ts`, `.dto.ts`, `.enum.ts`, and `.spec.ts`.
+- Use English for classes, interfaces, enums, variables, methods, selectors, and comments. Keep external API keys/claims unchanged as required by the contract.
+- Use PascalCase for classes, interfaces, and enums; use camelCase for variables, methods, and properties.
+- Keep TypeScript strict and avoid `any`.
+- Type every API request and response.
+- Prefer standalone components and `inject()`; keep components focused and put HTTP/business orchestration in services.
+- Handle loading, success, empty, and error states explicitly. Do not turn failed requests into success-shaped empty results.
+- Unsubscribe from long-lived observables with `async` pipes or `takeUntilDestroyed`.
+- Keep accessible labels and semantic controls in templates; use Angular built-in control flow.
+- All user-facing frontend copy is English. Keep Brazilian contract-specific values such as BRL currency, CPF validation, and API-supplied messages intact where translating them would change their meaning or contract.
 
 ## Commands
-- Restore: `dotnet restore ConexaoSolidaria.Web.slnx`
-- Build: `dotnet build ConexaoSolidaria.Web.slnx`
-- Test all: `dotnet test`
-- Run locally with compose: `docker compose -f src/docker-compose.yml up --build`
 
-## Running locally
-- Start RabbitMQ (example path; verify `docker-compose` location): `docker compose -f src/docker-compose.yml up -d`
-- Run the API: `dotnet run --project src/ConexaoSolidaria.API`
-- Stop RabbitMQ: `docker compose -f src/docker-compose.yml down`
-- Wait for RabbitMQ to be ready before starting the application.
+Run commands from this directory:
 
-## Frontend / JS/TS notes
-- The workspace may include JavaScript/TypeScript projects (frontend). Keep frontend assets and tooling (npm/Yarn, ESLint, Prettier) isolated from backend projects and follow the repo's frontend configs.
+- Install dependencies: `npm ci`
+- Start the frontend: `npm start`
+- Production build: `npm run build`
+- Unit tests (Angular CLI with Vitest): `npm test -- --watch=false`
 
-## Conventions
-- Standalone components; no NgModules in new code
-- File names: kebab-case with Angular suffixes (`donation-list.component.ts`)
-- Classes: PascalCase; variables and methods: camelCase
-- Strict TypeScript; no `any`
-- Define an interface for every API request and response
-- Use `inject()` or constructor DI; keep components thin, logic in services
-- Handle loading, error, and empty states on every API call
-- Unsubscribe from observables (`async` pipe, `takeUntilDestroyed`)
-- Prefer small, single-purpose components
+This project currently has no configured lint script or end-to-end test framework. Do not use Nx, .NET, or RabbitMQ commands for frontend validation. Add lint or E2E tooling only as a separately scoped project change.
 
-## General Rules
+## Tests and changes
 
-- Context7 MCP
-Always use context7 when I need code generation, setup or configuration steps, or library/API documentation. This
-means you should automatically use the Context7 MCP tools to resolve library id and get library docs without me
-having to explicitly ask.
-
-- Writing implementation plans
-Remember that you are writing high quality and maintainable code while avoiding overengineering. You must be
-pragmatic and follow the guidelines in the docs first before blindly following industry standards.
-Implementation plans should always include build and lint and e2e tests when necessary. Run lint, tests, and build before finishing a change. To run build add nx build
-<packageName> and nx lint:check <packageName>.
-
-- Implementation and Testing
-IMPORTANT: always include e2e tests to cover important paths. You should always make sure that the plans include a test suite that covers the happy paths and edge cases. Your tests should be high quality and give confidence while covering most of the implementalion. You must ALWAYS write or update e2e tests when touching controllers, routes, dtos or methods that impact apis indirectly.
-You must ALWAYS prove your work using unit tests when working on the domain layer, domain layer includes, services and ....
-
-- Do not edit CI workflows, Dockerfiles, or migrations without coordinating with maintainers.
+- Add or update unit tests for changed behavior, especially services, guards, routes, and validation.
+- Keep tests focused on both successful and rejected/invalid cases.
+- Run the production build and relevant unit tests before finishing implementation changes.
+- Do not commit secrets or `.env` files; frontend bundles are public.
 
 ## Commits
-- Conventional Commits (feat, fix, refactor, test, docs, chore), English, imperative mood, max 72 chars in the subject.
-- If the changes cover more than one concern, split them into multiple commits, one logical change per commit.
-- Order commits so each one builds on its own: refactors first, then features or fixes, then tests, then docs.
-- Commits only need to be called can when explicitly requested.
-- Do not commit secrets or `.env` files; the front-end bundle is public
+
+- Use Conventional Commits in English, imperative mood, with a subject no longer than 72 characters.
+- Split unrelated concerns into separate commits. Order commits so each commit remains buildable.

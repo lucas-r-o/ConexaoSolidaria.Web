@@ -1,59 +1,44 @@
-# ConexaoSolidariaWeb
+# Solidarity Connection
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.5.
+An Angular frontend for the ConexaoSolidaria API. The user interface is in English and continues to support Brazil-specific values such as CPF validation and BRL currency.
 
-## Development server
+## Requirements
 
-To start a local development server, run:
+- Node.js and npm (the package manager version is recorded in `package.json`)
 
-```bash
-ng serve
-```
+## Setup
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+From this directory, install dependencies and start the development server:
 
 ```bash
-ng generate component component-name
+npm ci
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The server runs at `http://127.0.0.1:58433/` and reloads when source files change.
+
+## Build
 
 ```bash
-ng generate --help
+npm run build
 ```
 
-## Building
+Production build output is written to `dist/`.
 
-To build the project run:
+## Unit tests
+
+Tests run with Vitest through the Angular CLI:
 
 ```bash
-ng build
+npm test -- --watch=false
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## API contract
 
-## Running unit tests
+The API is maintained separately. Its base URL is configured in `src/environments/`. Keep API endpoints and wire-format request/response keys unchanged unless the API contract is updated in coordination with its maintainers. Frontend symbols and user-facing copy should be in English.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Testing tools
 
-```bash
-ng test
-```
+No lint script or end-to-end test framework is currently configured in this frontend project.
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+For Angular CLI reference, see the [Angular CLI documentation](https://angular.dev/tools/cli).
