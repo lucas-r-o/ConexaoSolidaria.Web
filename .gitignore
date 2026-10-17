@@ -4,3 +4,4 @@
 
 /.vs
 /ConexaoSolidaria.Web/obj/Debug
+node_modules/
