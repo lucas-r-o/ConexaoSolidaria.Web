@@ -1,0 +1,211 @@
+<main class="lookup-page">
+  <header class="page-header">
+    <a class="wordmark" routerLink="/">Solidarity<span>Connection</span></a>
+    <a class="back-link" routerLink="/">Back to campaigns</a>
+  </header>
+
+  <section class="lookup-section" aria-labelledby="page-title">
+    <p class="eyebrow">CAMPAIGN MANAGEMENT</p>
+    <h1 id="page-title">Update a campaign.</h1>
+    <p class="intro">Enter a campaign ID to load and edit the permitted details.</p>
+
+    <form class="search-form" (ngSubmit)="findCampaignById(campaignIdInput.value)">
+      <label for="campaign-id">Campaign ID</label>
+      <div class="search-row">
+        <input
+          #campaignIdInput
+          id="campaign-id"
+          name="id"
+          type="search"
+          placeholder="Enter or paste the ID"
+          autocomplete="off"
+          required
+          [value]="campaignId()"
+          [disabled]="isLoading() || isSaving()"
+          aria-describedby="campaign-id-help"
+        />
+        <button class="search-button" type="submit" [disabled]="isLoading() || isSaving()">
+          {{ isLoading() ? 'Searching...' : 'Search campaign' }}
+        </button>
+      </div>
+      <p class="field-hint" id="campaign-id-help">Search for a campaign by its identifier.</p>
+    </form>
+
+    <section class="results" aria-live="polite" aria-label="Campaign to update">
+      @if (isLoading()) {
+        <p class="notice status" role="status">Loading campaign...</p>
+      }
+      @if (errorMessage()) {
+        <p class="notice error" role="alert">{{ errorMessage() }}</p>
+      }
+      @if (campaign(); as selectedCampaign) {
+        <article class="campaign-card" aria-labelledby="result-title">
+          <div class="result-heading">
+            <div>
+              <p class="result-label">SELECTED CAMPAIGN</p>
+              <h2 id="result-title">{{ selectedCampaign.titulo }}</h2>
+            </div>
+          </div>
+
+          <p class="field-hint">ID: {{ selectedCampaign.id }}</p>
+          <p class="raised-value">
+            Amount raised:
+            <strong>{{
+              selectedCampaign.valorTotalArrecadado | currency: 'BRL' : 'symbol' : '1.2-2' : 'en-US'
+            }}</strong>
+          </p>
+          <p class="field-hint form-hint">
+            The lookup does not return the description, status, or end date. Enter these details to
+            complete the update.
+          </p>
+
+          <form
+            class="edit-form"
+            [formGroup]="campaignForm"
+            (ngSubmit)="updateCampaign()"
+            novalidate
+          >
+            <div class="field">
+              <label for="title">Title</label>
+              <input
+                id="title"
+                type="text"
+                formControlName="title"
+                maxlength="100"
+                autocomplete="off"
+                [attr.aria-invalid]="
+                  campaignForm.controls.title.touched && campaignForm.controls.title.invalid
+                "
+                aria-describedby="title-help title-error"
+              />
+              <span class="field-footnote" id="title-help">Maximum 100 characters.</span>
+              @if (campaignForm.controls.title.touched && campaignForm.controls.title.errors) {
+                <p class="field-error" id="title-error" role="alert">
+                  @if (campaignForm.controls.title.errors['required']) {
+                    Enter a campaign title.
+                  }
+                  @if (campaignForm.controls.title.errors['maxlength']) {
+                    Use no more than 100 characters.
+                  }
+                  @if (campaignForm.controls.title.errors['pattern']) {
+                    The title cannot contain only spaces.
+                  }
+                </p>
+              }
+            </div>
+
+            <div class="field">
+              <label for="description">Description</label>
+              <textarea
+                id="description"
+                rows="5"
+                formControlName="description"
+                maxlength="500"
+                [attr.aria-invalid]="
+                  campaignForm.controls.description.touched &&
+                  campaignForm.controls.description.invalid
+                "
+                aria-describedby="description-help description-error"
+              ></textarea>
+              <span class="field-footnote" id="description-help">Maximum 500 characters.</span>
+              @if (
+                campaignForm.controls.description.touched &&
+                campaignForm.controls.description.errors
+              ) {
+                <p class="field-error" id="description-error" role="alert">
+                  @if (campaignForm.controls.description.errors['required']) {
+                    Enter a campaign description.
+                  }
+                  @if (campaignForm.controls.description.errors['maxlength']) {
+                    Use no more than 500 characters.
+                  }
+                  @if (campaignForm.controls.description.errors['pattern']) {
+                    The description cannot contain only spaces.
+                  }
+                </p>
+              }
+            </div>
+
+            <div class="field">
+              <label for="financial-goal">Fundraising goal</label>
+              <div class="money-input">
+                <span aria-hidden="true">R$</span>
+                <input
+                  id="financial-goal"
+                  type="number"
+                  formControlName="financialGoal"
+                  min="0.01"
+                  step="0.01"
+                  inputmode="decimal"
+                  [attr.aria-invalid]="
+                    campaignForm.controls.financialGoal.touched &&
+                    campaignForm.controls.financialGoal.invalid
+                  "
+                  aria-describedby="goal-help goal-error"
+                />
+              </div>
+              <span class="field-footnote" id="goal-help">Enter an amount greater than zero.</span>
+              @if (
+                campaignForm.controls.financialGoal.touched &&
+                campaignForm.controls.financialGoal.invalid
+              ) {
+                <p class="field-error" id="goal-error" role="alert">
+                  The fundraising goal must be greater than zero.
+                </p>
+              }
+            </div>
+
+            <div class="field">
+              <label for="status">Status</label>
+              <select
+                id="status"
+                formControlName="status"
+                [attr.aria-invalid]="
+                  campaignForm.controls.status.touched && campaignForm.controls.status.invalid
+                "
+                aria-describedby="status-help status-error"
+              >
+                <option [ngValue]="null" disabled>Select a status</option>
+                @for (status of statusOptions; track status.value) {
+                  <option [ngValue]="status.value">{{ status.label }}</option>
+                }
+              </select>
+              <span class="field-footnote" id="status-help">Choose the campaign status.</span>
+              @if (campaignForm.controls.status.touched && campaignForm.controls.status.invalid) {
+                <p class="field-error" id="status-error" role="alert">Select a status.</p>
+              }
+            </div>
+
+            <div class="field">
+              <label for="end-date">End date <span class="optional">Optional</span></label>
+              <input
+                id="end-date"
+                type="date"
+                formControlName="endDate"
+                aria-describedby="end-date-help"
+              />
+              <span class="field-footnote" id="end-date-help"
+                >Leave blank if no end date is set.</span
+              >
+            </div>
+
+            @if (isSuccessful()) {
+              <p class="notice success" role="status">Campaign updated successfully.</p>
+            }
+            @if (saveErrorMessage()) {
+              <p class="notice error" role="alert">{{ saveErrorMessage() }}</p>
+            }
+
+            <button
+              class="submit-button"
+              type="submit"
+              [disabled]="campaignForm.invalid || isSaving()"
+            >
+              {{ isSaving() ? 'Saving changes...' : 'Update campaign' }}
+            </button>
+          </form>
+        </article>
+      }
+    </section>
+  </section>
+</main>

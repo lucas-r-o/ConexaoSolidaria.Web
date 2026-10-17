@@ -1,0 +1,135 @@
+<main class="create-page">
+  <header class="page-header">
+    <a class="wordmark" routerLink="/">Solidarity<span>Connection</span></a>
+    <a class="back-link" routerLink="/">Back to campaigns</a>
+  </header>
+
+  <section class="form-section" aria-labelledby="page-title">
+    <p class="eyebrow">CAMPAIGN MANAGEMENT</p>
+    <h1 id="page-title">A new cause starts here.</h1>
+    <p class="intro">
+      Tell people what needs to be done and what amount can make that change happen.
+    </p>
+
+    <form [formGroup]="campaignForm" (ngSubmit)="createCampaign()" novalidate>
+      <div class="field">
+        <label for="title">Title</label>
+        <input
+          id="title"
+          type="text"
+          formControlName="title"
+          maxlength="100"
+          autocomplete="off"
+          [attr.aria-invalid]="
+            campaignForm.controls.title.touched && campaignForm.controls.title.invalid
+          "
+          aria-describedby="title-help title-error"
+        />
+        <div class="field-footnote">
+          <span id="title-help">Give the campaign a clear name.</span>
+          <span>{{ campaignForm.controls.title.value.length }}/100</span>
+        </div>
+        @if (campaignForm.controls.title.touched && campaignForm.controls.title.errors) {
+          <p class="field-error" id="title-error" role="alert">
+            @if (campaignForm.controls.title.errors['required']) {
+              Enter a campaign title.
+            }
+            @if (campaignForm.controls.title.errors['maxlength']) {
+              Use no more than 100 characters.
+            }
+            @if (campaignForm.controls.title.errors['pattern']) {
+              The title cannot contain only spaces.
+            }
+          </p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          rows="5"
+          formControlName="description"
+          maxlength="500"
+          [attr.aria-invalid]="
+            campaignForm.controls.description.touched && campaignForm.controls.description.invalid
+          "
+          aria-describedby="description-help description-error"
+        ></textarea>
+        <div class="field-footnote">
+          <span id="description-help">Explain the need and the impact of the fundraiser.</span>
+          <span>{{ campaignForm.controls.description.value.length }}/500</span>
+        </div>
+        @if (
+          campaignForm.controls.description.touched && campaignForm.controls.description.errors
+        ) {
+          <p class="field-error" id="description-error" role="alert">
+            @if (campaignForm.controls.description.errors['required']) {
+              Enter a campaign description.
+            }
+            @if (campaignForm.controls.description.errors['maxlength']) {
+              Use no more than 500 characters.
+            }
+            @if (campaignForm.controls.description.errors['pattern']) {
+              The description cannot contain only spaces.
+            }
+          </p>
+        }
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label for="financial-goal">Fundraising goal</label>
+          <div class="money-input">
+            <span aria-hidden="true">R$</span>
+            <input
+              id="financial-goal"
+              type="number"
+              formControlName="financialGoal"
+              min="0.01"
+              step="0.01"
+              inputmode="decimal"
+              [attr.aria-invalid]="
+                campaignForm.controls.financialGoal.touched &&
+                campaignForm.controls.financialGoal.invalid
+              "
+              aria-describedby="goal-help goal-error"
+            />
+          </div>
+          <span class="field-footnote" id="goal-help">The amount must be greater than zero.</span>
+          @if (
+            campaignForm.controls.financialGoal.touched &&
+            campaignForm.controls.financialGoal.invalid
+          ) {
+            <p class="field-error" id="goal-error" role="alert">
+              Enter a goal greater than R$ 0.00.
+            </p>
+          }
+        </div>
+
+        <div class="field">
+          <label for="end-date">End date <span class="optional">Optional</span></label>
+          <input id="end-date" type="date" formControlName="endDate" />
+          <span class="field-footnote">Leave blank if there is no end date.</span>
+        </div>
+      </div>
+
+      @if (isSuccessful()) {
+        <p class="notice success" role="status">
+          Campaign created. It is now available on the platform.
+        </p>
+      }
+      @if (errorMessage()) {
+        <p class="notice error" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <button
+        class="submit-button"
+        type="submit"
+        [disabled]="campaignForm.invalid || isSubmitting()"
+      >
+        {{ isSubmitting() ? 'Creating campaign...' : 'Create campaign' }}
+      </button>
+    </form>
+  </section>
+</main>

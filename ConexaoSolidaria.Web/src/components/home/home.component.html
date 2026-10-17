@@ -1,0 +1,114 @@
+<header>
+  <div class="wrap header-row">
+    <div class="wordmark">Solidarity<span class="accent">Connection</span></div>
+    <nav aria-label="Main navigation">
+      <a href="#about">About</a>
+      @if (isDonor()) {
+        <a routerLink="/donate">Donate</a>
+      }
+      @if (isOrganizationManager()) {
+        <a routerLink="/campaigns/create">Create campaign</a>
+      }
+      @if (!isLoggedIn()) {
+        <a routerLink="/login">Sign in</a>
+        <a routerLink="/register">Register</a>
+      } @else {
+        <button class="nav-button" type="button" (click)="logout()">Sign out</button>
+      }
+    </nav>
+  </div>
+</header>
+
+<main>
+  @if (accessDenied()) {
+    <p class="wrap access-denied" role="alert">
+      Your account does not have permission to access this area.
+    </p>
+  }
+  <section class="wrap hero" id="about">
+    <h1>Help that arrives before an urgent need becomes <em>too late</em>.</h1>
+    <p>
+      Every campaign is verified and tracked through completion. Choose a cause, give what you can,
+      and see the impact.
+    </p>
+    <a class="cta" href="#campaigns">Browse active campaigns</a>
+  </section>
+
+  <section class="wrap impact">
+    <div class="impact-figure">
+      <span class="num">{{ totalRaised() | currency: 'BRL' : 'symbol' : '1.0-0' : 'en-US' }}</span>
+      <span class="label">raised this year</span>
+    </div>
+    <div class="impact-figure">
+      <span class="num">{{ campaigns().length }}</span>
+      <span class="label">active campaigns</span>
+    </div>
+  </section>
+
+  <section class="wrap campaigns" id="campaigns">
+    <div class="section-heading">
+      <h2>Active campaigns</h2>
+      @if (!isLoading() && !hasError()) {
+        <span>{{ campaigns().length }} currently</span>
+      }
+    </div>
+    @if (isLoading()) {
+      <div class="state-message">Loading campaigns...</div>
+    }
+    @if (hasError()) {
+      <div class="state-message">Campaigns could not be loaded right now.</div>
+    }
+    @if (!isLoading() && !hasError() && campaigns().length === 0) {
+      <div class="state-message">There are no active campaigns right now.</div>
+    }
+
+    @if (!isLoading() && !hasError()) {
+      <ul class="campaign-list">
+        @for (campaign of campaigns(); track campaign.id) {
+          <li class="campaign">
+            <h3 class="campaign-title">{{ campaign.titulo }}</h3>
+
+            <div class="campaign-progress-track">
+              <div
+                class="campaign-progress-fill"
+                [style.width.%]="progressPercentage(campaign)"
+              ></div>
+            </div>
+
+            <div class="campaign-meta">
+              <span>
+                <strong>{{
+                  campaign.valorTotalArrecadado | currency: 'BRL' : 'symbol' : '1.0-0' : 'en-US'
+                }}</strong>
+                of {{ campaign.metaFinanceira | currency: 'BRL' : 'symbol' : '1.0-0' : 'en-US' }}
+              </span>
+              <span>{{ progressPercentage(campaign) }}% of goal</span>
+            </div>
+
+            <div class="campaign-actions">
+              @if (isDonor()) {
+                <a
+                  class="campaign-action"
+                  [routerLink]="['/donate']"
+                  [queryParams]="{ campaign: campaign.id }"
+                  [attr.aria-label]="'Donate to ' + campaign.titulo"
+                  >Donate</a
+                >
+              }
+              @if (isOrganizationManager()) {
+                <a
+                  class="campaign-action"
+                  [routerLink]="['/campaigns/update', campaign.id]"
+                  [attr.aria-label]="'Edit ' + campaign.titulo"
+                  >Edit</a
+                >
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+</main>
+
+<footer class="wrap">Solidarity Connection — a donation platform</footer>

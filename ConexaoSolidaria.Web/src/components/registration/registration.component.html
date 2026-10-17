@@ -1,0 +1,151 @@
+<main class="registration-page">
+  <header class="page-header">
+    <a class="wordmark" routerLink="/">Solidarity<span>Connection</span></a>
+    <a class="back-link" routerLink="/">Back to campaigns</a>
+  </header>
+
+  <section class="form-section" aria-labelledby="page-title">
+    <p class="eyebrow">JOIN THE COMMUNITY</p>
+    <h1 id="page-title">A network of solidarity starts with you.</h1>
+    <p class="intro">
+      Create an account to support campaigns and track the impact of your donations.
+    </p>
+
+    @if (isSuccessful()) {
+      <div class="notice success" role="status">
+        <p>Registration complete. You can now sign in and support a cause.</p>
+        <a class="submit-button" routerLink="/login">Go to sign in</a>
+      </div>
+    } @else {
+      <form [formGroup]="registrationForm" (ngSubmit)="register()" novalidate>
+        <div class="field">
+          <label for="full-name">Full name</label>
+          <input
+            id="full-name"
+            type="text"
+            formControlName="fullName"
+            autocomplete="name"
+            [attr.aria-invalid]="
+              registrationForm.controls.fullName.touched &&
+              registrationForm.controls.fullName.invalid
+            "
+            aria-describedby="full-name-help full-name-error"
+          />
+          <span class="field-footnote" id="full-name-help">Enter your first and last name.</span>
+          @if (
+            registrationForm.controls.fullName.touched && registrationForm.controls.fullName.errors
+          ) {
+            <p class="field-error" id="full-name-error" role="alert">
+              @if (registrationForm.controls.fullName.errors['required']) {
+                Full name is required.
+              }
+              @if (registrationForm.controls.fullName.errors['pattern']) {
+                Enter your full name (first and last name).
+              }
+            </p>
+          }
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            [attr.aria-invalid]="
+              registrationForm.controls.email.touched && registrationForm.controls.email.invalid
+            "
+            aria-describedby="email-error"
+          />
+          @if (registrationForm.controls.email.touched && registrationForm.controls.email.errors) {
+            <p class="field-error" id="email-error" role="alert">
+              @if (registrationForm.controls.email.errors['required']) {
+                Email is required.
+              }
+              @if (registrationForm.controls.email.errors['email']) {
+                Enter a valid email address.
+              }
+            </p>
+          }
+        </div>
+
+        <div class="field">
+          <label for="tax-id">Brazilian taxpayer ID (CPF)</label>
+          <input
+            id="tax-id"
+            type="text"
+            formControlName="taxId"
+            inputmode="numeric"
+            autocomplete="off"
+            placeholder="000.000.000-00"
+            [attr.aria-invalid]="
+              registrationForm.controls.taxId.touched && registrationForm.controls.taxId.invalid
+            "
+            aria-describedby="tax-id-help tax-id-error"
+          />
+          <span class="field-footnote" id="tax-id-help"
+            >Use digits only or the format 000.000.000-00.</span
+          >
+          @if (registrationForm.controls.taxId.touched && registrationForm.controls.taxId.errors) {
+            <p class="field-error" id="tax-id-error" role="alert">
+              @if (registrationForm.controls.taxId.errors['required']) {
+                A Brazilian taxpayer ID is required.
+              }
+              @if (registrationForm.controls.taxId.errors['taxIdInvalid']) {
+                Enter a valid Brazilian taxpayer ID.
+              }
+            </p>
+          }
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            autocomplete="new-password"
+            aria-describedby="password-help password-error"
+            [attr.aria-invalid]="
+              registrationForm.controls.password.touched &&
+              registrationForm.controls.password.invalid
+            "
+          />
+          <span class="field-footnote" id="password-help"
+            >At least 8 characters, including uppercase, lowercase, a number, and a symbol.</span
+          >
+          @if (
+            registrationForm.controls.password.touched && registrationForm.controls.password.errors
+          ) {
+            <p class="field-error" id="password-error" role="alert">
+              @if (registrationForm.controls.password.errors['required']) {
+                Password is required.
+              }
+              @if (registrationForm.controls.password.errors['pattern']) {
+                Passwords must be at least 8 characters and include uppercase and lowercase letters,
+                a number, and a special character.
+              }
+            </p>
+          }
+        </div>
+
+        @if (errorMessage()) {
+          <p class="notice error" role="alert">{{ errorMessage() }}</p>
+        }
+
+        <button
+          class="submit-button"
+          type="submit"
+          [disabled]="registrationForm.invalid || isSubmitting()"
+        >
+          {{ isSubmitting() ? 'Creating your account...' : 'Create account' }}
+        </button>
+      </form>
+    }
+
+    @if (!isSuccessful()) {
+      <p class="login-prompt">Already have an account? <a routerLink="/login">Sign in</a>.</p>
+    }
+  </section>
+</main>

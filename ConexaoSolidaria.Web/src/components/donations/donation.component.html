@@ -1,0 +1,80 @@
+<main class="donation-page">
+  <header class="page-header">
+    <a class="wordmark" routerLink="/">Solidarity<span>Connection</span></a>
+    <a class="back-link" routerLink="/">Back to campaigns</a>
+  </header>
+
+  <section class="donation-section" aria-labelledby="page-title">
+    <p class="eyebrow">SUPPORT A CAUSE</p>
+    <h1 id="page-title">Your donation can make a difference.</h1>
+    <p class="intro">Choose a campaign and enter the amount you would like to give.</p>
+
+    <form class="donation-form" (submit)="$event.preventDefault(); submitDonation()">
+      <div class="field">
+        <label for="campaign">Campaign</label>
+        <select
+          #campaignSelect
+          id="campaign"
+          name="campaign"
+          required
+          [value]="selectedCampaignId ?? ''"
+          [disabled]="loading || isSubmitting || campaigns.length === 0"
+          aria-describedby="campaign-help"
+          (change)="selectedCampaignId = campaignSelect.value || null"
+        >
+          <option value="" disabled>
+            {{ loading ? 'Loading campaigns...' : 'Select a campaign' }}
+          </option>
+          @for (campaign of campaigns; track campaign.id) {
+            <option [value]="campaign.id">{{ campaign.titulo }}</option>
+          }
+        </select>
+        <span class="field-footnote" id="campaign-help"
+          >Choose the campaign you would like to support.</span
+        >
+        @if (loading) {
+          <p class="field-hint" role="status">Fetching campaigns...</p>
+        }
+        @if (!loading && campaigns.length === 0) {
+          <p class="field-hint">There are no campaigns available for donations right now.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="amount">Donation amount</label>
+        <div class="money-input">
+          <span aria-hidden="true">R$</span>
+          <input
+            #amountInput
+            id="amount"
+            name="amount"
+            type="number"
+            min="0.01"
+            step="0.01"
+            inputmode="decimal"
+            required
+            [disabled]="isSubmitting"
+            aria-describedby="amount-help"
+            (input)="donationAmount = +amountInput.value"
+          />
+        </div>
+        <span class="field-footnote" id="amount-help">Enter an amount greater than R$ 0.00.</span>
+      </div>
+
+      @if (successMessage) {
+        <p class="notice success" role="status">{{ successMessage }}</p>
+      }
+      @if (errorMessage) {
+        <p class="notice error" role="alert">{{ errorMessage }}</p>
+      }
+
+      <button
+        class="submit-button"
+        type="submit"
+        [disabled]="isSubmitting || loading || selectedCampaignId === null || donationAmount <= 0"
+      >
+        {{ isSubmitting ? 'Submitting donation...' : 'Donate' }}
+      </button>
+    </form>
+  </section>
+</main>
