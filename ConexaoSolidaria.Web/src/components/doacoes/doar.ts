@@ -44,7 +44,7 @@ export class Doar implements OnInit {
             return;
         }
 
-        const doadorId = this.authService.getTokenPayload()?.unique_name;
+        const doadorId = this.authService.getTokenPayload()?.nameid;
         if (!doadorId) {
             this.erro = 'Não foi possível identificar sua conta. Entre novamente para fazer uma doação.';
             return;

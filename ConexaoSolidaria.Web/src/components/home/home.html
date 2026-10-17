@@ -1,16 +1,28 @@
 <header>
   <div class="wrap header-row">
     <div class="wordmark">Conexão<span class="accent">Solidária</span></div>
-    <nav>
+    <nav aria-label="Navegação principal">
       <a href="#sobre">Sobre</a>
-      <a routerLink="/campanhas/criar">Criar campanha</a>
-      <a routerLink="/login">Entrar</a>
-      <a routerLink="/cadastro">Cadastre-se</a>
+      @if (isDoador()) {
+        <a routerLink="/doar">Doar</a>
+      }
+      @if (isGestorOng()) {
+        <a routerLink="/campanhas/criar">Criar campanha</a>
+      }
+      @if (!isLoggedIn()) {
+        <a routerLink="/login">Entrar</a>
+        <a routerLink="/cadastro">Cadastre-se</a>
+      } @else {
+        <button class="nav-button" type="button" (click)="sair()">Sair</button>
+      }
     </nav>
   </div>
 </header>
 
 <main>
+@if (acessoNegado()) {
+  <p class="wrap access-denied" role="alert">Seu perfil não tem permissão para acessar essa área.</p>
+}
 <section class="wrap hero">
   <h1>Ajuda que chega antes da urgência virar <em>tarde demais</em>.</h1>
   <p>Cada campanha aqui foi verificada e acompanhada até o fim. Escolha uma causa, doe o quanto puder, veja o resultado.</p>
@@ -64,12 +76,23 @@
         <span>{{ progresso(c) }}% da meta</span>
       </div>
 
-      <a
-        class="campaign-action"
-        [routerLink]="['/doar']"
-        [queryParams]="{ campanha: c.id }"
-        [attr.aria-label]="'Doar para ' + c.titulo"
-      >Doar</a>
+      <div class="campaign-actions">
+        @if (isDoador()) {
+          <a
+            class="campaign-action"
+            [routerLink]="['/doar']"
+            [queryParams]="{ campanha: c.id }"
+            [attr.aria-label]="'Doar para ' + c.titulo"
+          >Doar</a>
+        }
+        @if (isGestorOng()) {
+          <a
+            class="campaign-action"
+            [routerLink]="['/campanhas/atualizar', c.id]"
+            [attr.aria-label]="'Editar ' + c.titulo"
+          >Editar</a>
+        }
+      </div>
     </li>
     }
   </ul>

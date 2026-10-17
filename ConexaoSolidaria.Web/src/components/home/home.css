@@ -46,16 +46,28 @@ header {
 
 nav {
   display: flex;
+  align-items: center;
   gap: var(--space-13);
   font-size: var(--font-size-body);
 }
 
-  nav a {
+  nav a,
+  .nav-button {
     text-decoration: none;
     opacity: 0.75;
   }
 
-    nav a:hover {
+  .nav-button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+    nav a:hover,
+    .nav-button:hover {
       opacity: 1;
     }
 
@@ -157,6 +169,12 @@ nav {
   font-size: var(--font-size-body);
 }
 
+.access-denied {
+  margin-top: var(--space-7);
+  color: var(--color-error-text);
+  font-size: var(--font-size-body-sm);
+}
+
 .campaign-list {
   margin-top: var(--space-11);
   padding: 0;
@@ -208,13 +226,19 @@ nav {
     font-weight: var(--font-weight-semibold);
   }
 
+.campaign-actions {
+  grid-column: 2 / 3;
+  grid-row: 1 / 4;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
 .campaign-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  grid-column: 2 / 3;
-  grid-row: 1 / 4;
-  align-self: center;
   background: var(--color-white);
   border: 1.5px solid var(--purple-mid);
   color: var(--purple-dark);
@@ -262,10 +286,15 @@ footer {
   }
 
   .campaign-action {
-    grid-column: 1;
-    grid-row: auto;
     margin-top: var(--space-7);
     justify-self: start;
+  }
+
+  .campaign-actions {
+    grid-column: 1;
+    grid-row: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   .impact {

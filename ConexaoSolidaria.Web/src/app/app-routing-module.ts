@@ -5,8 +5,9 @@ import { Home } from '../components/home/home';
 import { CriarCampanha } from '../components/campanhas/criar-campanha';
 import { AtualizarCampanha } from '../components/campanhas/atualizar-campanha';
 import { Doar } from '../components/doacoes/doar';
-import { AuthGuard } from '../services/auth/authGuard';
+import { AuthGuard, RoleGuard } from '../services/auth/authGuard';
 import { Cadastro } from '../components/cadastro/cadastro';
+import { UserRole } from '../services/auth/AuthService';
 
 const routes: Routes = [
   {
@@ -20,22 +21,26 @@ const routes: Routes = [
   {
     path: "doar",
     component: Doar,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: UserRole.Doador }
   },
   {
     path: "campanhas/criar",
     component: CriarCampanha,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: UserRole.GestorOng }
   },
   {
     path: "campanhas/atualizar",
     component: AtualizarCampanha,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: UserRole.GestorOng }
   },
   {
     path: "campanhas/atualizar/:id",
     component: AtualizarCampanha,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: UserRole.GestorOng }
   },
   {
     path: "",

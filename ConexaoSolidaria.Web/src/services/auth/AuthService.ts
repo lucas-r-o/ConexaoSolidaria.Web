@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 
+export enum UserRole {
+  Doador = 0,
+  GestorOng = 1,
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-private readonly TOKEN_KEY = 'token';
+  private readonly TOKEN_KEY = 'token';
 
   isLoggedIn(): boolean {
     const token = localStorage.getItem(this.TOKEN_KEY);
@@ -30,6 +35,10 @@ private readonly TOKEN_KEY = 'token';
     }
   }
 
+  hasRole(role: UserRole): boolean {
+    return this.getTokenPayload()?.role?.toLocaleUpperCase() === UserRole[role].toLocaleUpperCase();
+  }
+
   getHeaderToken(): { Authorization: string } | undefined {
     const token = localStorage.getItem(this.TOKEN_KEY);
     return token ? { Authorization: `Bearer ${token}` } : undefined;
@@ -38,7 +47,7 @@ private readonly TOKEN_KEY = 'token';
 }
 
 interface TokenPayload {
-  unique_name?: string;
+  nameid?: string;
   email?: string;
   role?: string;
   exp?: number;

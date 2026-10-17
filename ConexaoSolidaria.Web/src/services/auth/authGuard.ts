@@ -17,3 +17,17 @@ export const AuthGuard: CanActivateFn = (_route, state) => {
     }
   });
 };
+
+export const RoleGuard: CanActivateFn = (route) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  const requiredRole = route.data['role'];
+
+  if (typeof requiredRole === 'number' && authService.hasRole(requiredRole)) {
+    return true;
+  }
+
+  return router.createUrlTree(['/'], {
+    queryParams: { acessoNegado: '1' },
+  });
+};
