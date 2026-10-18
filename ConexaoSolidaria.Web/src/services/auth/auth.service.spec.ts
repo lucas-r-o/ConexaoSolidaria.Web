@@ -34,8 +34,17 @@ describe('AuthService role access', () => {
     getPayload.mockReturnValue({ role: 'gestorong' });
     expect(authService.hasRole(UserRole.OrganizationManager)).toBe(true);
 
+    getPayload.mockReturnValue({ role: 'OrganizationManager' });
+    expect(authService.hasRole(UserRole.OrganizationManager)).toBe(true);
+
     getPayload.mockReturnValue({ role: '1' });
     expect(authService.hasRole(UserRole.OrganizationManager)).toBe(false);
+  });
+
+  it('recognizes the English donor claim returned by the login API', () => {
+    vi.spyOn(authService, 'getJwtPayload').mockReturnValue({ role: 'Donor' });
+
+    expect(authService.hasRole(UserRole.Donor)).toBe(true);
   });
 
   it('uses the existing API login endpoint and request fields', async () => {

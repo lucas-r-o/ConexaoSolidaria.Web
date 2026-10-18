@@ -10,9 +10,9 @@ export enum UserRole {
   OrganizationManager = 1,
 }
 
-const API_ROLE_CLAIMS: Record<UserRole, string> = {
-  [UserRole.Donor]: 'Doador',
-  [UserRole.OrganizationManager]: 'GestorOng',
+const API_ROLE_CLAIMS: Record<UserRole, readonly string[]> = {
+  [UserRole.Donor]: ['Donor', 'Doador'],
+  [UserRole.OrganizationManager]: ['OrganizationManager', 'GestorOng'],
 };
 
 @Injectable({ providedIn: 'root' })
@@ -52,7 +52,8 @@ export class AuthService {
   }
 
   hasRole(role: UserRole): boolean {
-    return this.getJwtPayload()?.role?.toUpperCase() === API_ROLE_CLAIMS[role].toUpperCase();
+    const userRole = this.getJwtPayload()?.role?.toUpperCase();
+    return API_ROLE_CLAIMS[role].some((claim) => claim.toUpperCase() === userRole);
   }
 
   getAuthorizationHeader(): { Authorization: string } | undefined {

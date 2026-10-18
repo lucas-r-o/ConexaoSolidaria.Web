@@ -10,6 +10,14 @@ import { HomeComponent } from './home.component';
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
+  const campaigns = [
+    {
+      id: 'campaign-id',
+      titulo: 'Community garden',
+      metaFinanceira: 55000,
+      valorTotalArrecadado: 12500,
+    },
+  ];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -20,7 +28,7 @@ describe('HomeComponent', () => {
           provide: AuthService,
           useValue: { isLoggedIn: () => false, hasRole: () => false, logout: vi.fn() },
         },
-        { provide: CampaignService, useValue: { watchCampaigns: () => of([]) } },
+        { provide: CampaignService, useValue: { watchCampaigns: () => of(campaigns) } },
       ],
     }).compileComponents();
 
@@ -31,5 +39,23 @@ describe('HomeComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('shows the title of each active campaign', () => {
+    fixture.detectChanges();
+
+    const title = fixture.nativeElement.querySelector('.campaign-title');
+    expect(title.textContent.trim()).toBe('Community garden');
+  });
+
+  it('shows a donate link with the campaign ID for donors', () => {
+    component.isDonor.set(true);
+    fixture.detectChanges();
+
+    const donateLink: HTMLAnchorElement = fixture.nativeElement.querySelector(
+      '.campaign-action[aria-label="Donate to Community garden"]',
+    );
+    expect(donateLink).toBeTruthy();
+    expect(donateLink.getAttribute('href')).toBe('/donate?campaign=campaign-id');
   });
 });
