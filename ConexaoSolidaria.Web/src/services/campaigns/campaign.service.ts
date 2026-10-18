@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, timer } from 'rxjs';
-import { switchMap, shareReplay, retry } from 'rxjs/operators';
+import { map, switchMap, shareReplay, retry } from 'rxjs/operators';
 import { PublicCampaignDto } from './public-campaign.dto';
 import { CreateCampaignRequestDto } from './create-campaign.dto';
 import { environment } from '../../environments/environment';
@@ -10,6 +10,22 @@ import { AuthService } from '../auth/auth.service';
 
 const POLL_INTERVAL_MS = 15_000;
 
+interface CampaignApiResponse {
+  id: string;
+  title: string;
+  financialGoal: number;
+  totalAmountRaised: number;
+}
+
+function mapCampaignResponse(campaign: CampaignApiResponse): PublicCampaignDto {
+  return {
+    id: campaign.id,
+    titulo: campaign.title,
+    metaFinanceira: campaign.financialGoal,
+    valorTotalArrecadado: campaign.totalAmountRaised,
+  };
+}
+
 @Injectable({ providedIn: 'root' })
 export class CampaignService {
   private readonly http = inject(HttpClient);
@@ -17,8 +33,11 @@ export class CampaignService {
 
   getCampaigns(): Observable<PublicCampaignDto[]> {
     return this.http
-      .get<PublicCampaignDto[]>(`${environment.apiUrl}/campanhas`)
-      .pipe(retry({ count: 2, delay: 1000 }));
+      .get<CampaignApiResponse[]>(`${environment.apiUrl}/campanhas`)
+      .pipe(
+        map((campaigns) => campaigns.map(mapCampaignResponse)),
+        retry({ count: 2, delay: 1000 }),
+      );
   }
 
   watchCampaigns(): Observable<PublicCampaignDto[]> {
@@ -29,11 +48,15 @@ export class CampaignService {
   }
 
   getCampaign(id: string): Observable<PublicCampaignDto> {
-    return this.http.get<PublicCampaignDto>(`${environment.apiUrl}/campanhas/${id}`);
+    return this.http
+      .get<CampaignApiResponse>(`${environment.apiUrl}/campanhas/${id}`)
+      .pipe(map(mapCampaignResponse));
   }
 
   updateCampaign(id: string, campaign: UpdateCampaignRequestDto): Observable<PublicCampaignDto> {
-    return this.http.put<PublicCampaignDto>(`${environment.apiUrl}/campanhas/${id}`, campaign);
+    return this.http
+      .put<CampaignApiResponse>(`${environment.apiUrl}/campanhas/${id}`, campaign)
+      .pipe(map(mapCampaignResponse));
   }
 
   createCampaign(dto: CreateCampaignRequestDto): Observable<unknown> {
