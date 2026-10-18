@@ -12,8 +12,8 @@ export class UserService {
   private readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
 
-  register(request: RegistrationRequestDto): Observable<unknown> {
-    return this.http.post<unknown>(`${environment.apiUrl}/doadores`, request);
+  register(request: RegistrationRequestDto): Observable<string> {
+    return this.http.post(`${environment.apiUrl}/doacao`, request, { responseType: 'text' });
   }
 
   donate(donation: DonationRequestDto): Observable<DonationResponseDto> {

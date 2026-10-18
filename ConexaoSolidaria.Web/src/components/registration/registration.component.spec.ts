@@ -1,7 +1,11 @@
 import '@angular/compiler';
 import { FormControl } from '@angular/forms';
-import { describe, expect, it } from 'vitest';
-import { brazilianTaxIdValidator } from './registration.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterModule } from '@angular/router';
+import { of } from 'rxjs';
+import { describe, expect, it, vi } from 'vitest';
+import { RegistrationComponent, brazilianTaxIdValidator } from './registration.component';
+import { UserService } from '../../services/users/user.service';
 
 describe('Brazilian tax ID validator', () => {
   it('accepts valid values with and without formatting', () => {
@@ -16,5 +20,35 @@ describe('Brazilian tax ID validator', () => {
     expect(brazilianTaxIdValidator(new FormControl('529.982.247-26'))).toEqual({
       taxIdInvalid: true,
     });
+  });
+});
+
+describe('RegistrationComponent', () => {
+  it('displays the success message returned by the API', async () => {
+    await TestBed.configureTestingModule({
+      imports: [RegistrationComponent, RouterModule.forRoot([])],
+      providers: [
+        {
+          provide: UserService,
+          useValue: { register: vi.fn(() => of('Usuário cadastrado com sucesso')) },
+        },
+      ],
+    }).compileComponents();
+
+    const fixture: ComponentFixture<RegistrationComponent> =
+      TestBed.createComponent(RegistrationComponent);
+    const component = fixture.componentInstance;
+    component.registrationForm.setValue({
+      fullName: 'Test User',
+      email: 'test@example.com',
+      taxId: '52998224725',
+      password: 'Example-password1!',
+    });
+    component.register();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('[role="status"]').textContent).toContain(
+      'Usuário cadastrado com sucesso',
+    );
   });
 });

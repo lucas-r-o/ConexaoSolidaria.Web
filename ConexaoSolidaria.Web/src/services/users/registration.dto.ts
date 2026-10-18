@@ -1,6 +1,6 @@
 export interface RegistrationRequestDto {
-  nome: string;
+  name: string;
   email: string;
-  cpf: string;
-  senhaHash: string;
+  taxId: string;
+  passwordHash: string;
 }

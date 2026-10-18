@@ -11,9 +11,9 @@
       Create an account to support campaigns and track the impact of your donations.
     </p>
 
-    @if (isSuccessful()) {
+    @if (successMessage(); as message) {
       <div class="notice success" role="status">
-        <p>Registration complete. You can now sign in and support a cause.</p>
+        <p>{{ message }}</p>
         <a class="submit-button" routerLink="/login">Go to sign in</a>
       </div>
     } @else {
@@ -144,7 +144,7 @@
       </form>
     }
 
-    @if (!isSuccessful()) {
+    @if (!successMessage()) {
       <p class="login-prompt">Already have an account? <a routerLink="/login">Sign in</a>.</p>
     }
   </section>

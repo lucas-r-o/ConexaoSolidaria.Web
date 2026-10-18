@@ -62,7 +62,7 @@ export class RegistrationComponent {
   private readonly destroyRef = inject(DestroyRef);
 
   readonly isSubmitting = signal(false);
-  readonly isSuccessful = signal(false);
+  readonly successMessage = signal<string | null>(null);
   readonly errorMessage = signal<string | null>(null);
 
   readonly registrationForm = this.formBuilder.nonNullable.group({
@@ -80,10 +80,10 @@ export class RegistrationComponent {
 
     const formValue = this.registrationForm.getRawValue();
     const request: RegistrationRequestDto = {
-      nome: formValue.fullName.trim(),
+      name: formValue.fullName.trim(),
       email: formValue.email.trim(),
-      cpf: formValue.taxId.trim(),
-      senhaHash: formValue.password,
+      taxId: formValue.taxId.trim(),
+      passwordHash: formValue.password,
     };
 
     this.errorMessage.set(null);
@@ -95,7 +95,7 @@ export class RegistrationComponent {
         finalize(() => this.isSubmitting.set(false)),
       )
       .subscribe({
-        next: () => this.isSuccessful.set(true),
+        next: (message) => this.successMessage.set(message),
         error: (error: unknown) => this.errorMessage.set(this.getErrorMessage(error)),
       });
   }
