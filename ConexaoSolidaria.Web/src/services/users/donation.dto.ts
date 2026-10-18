@@ -1,5 +1,5 @@
 export interface DonationRequestDto {
-  campanhaId: string;
-  doadorId: string;
-  valor: number;
+  campaignId: string;
+  donorId: string;
+  amount: number;
 }
