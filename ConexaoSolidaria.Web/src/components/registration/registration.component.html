@@ -5,16 +5,26 @@
   </header>
 
   <section class="form-section" aria-labelledby="page-title">
-    <p class="eyebrow">JOIN THE COMMUNITY</p>
-    <h1 id="page-title">A network of solidarity starts with you.</h1>
+    <p class="eyebrow">
+      {{ isManagerCreation ? 'ORGANIZATION MANAGEMENT' : 'JOIN THE COMMUNITY' }}
+    </p>
+    <h1 id="page-title">
+      {{ isManagerCreation ? 'Create an organization manager account.' : 'A network of solidarity starts with you.' }}
+    </h1>
     <p class="intro">
-      Create an account to support campaigns and track the impact of your donations.
+      {{
+        isManagerCreation
+          ? 'Create an account for someone who will manage campaigns for your organization.'
+          : 'Create an account to support campaigns and track the impact of your donations.'
+      }}
     </p>
 
     @if (successMessage(); as message) {
       <div class="notice success" role="status">
         <p>{{ message }}</p>
-        <a class="submit-button" routerLink="/login">Go to sign in</a>
+        <a class="submit-button" routerLink="/">
+          {{ isManagerCreation ? 'Back to campaigns' : 'Go to sign in' }}
+        </a>
       </div>
     } @else {
       <form [formGroup]="registrationForm" (ngSubmit)="register()" novalidate>
@@ -139,12 +149,18 @@
           type="submit"
           [disabled]="registrationForm.invalid || isSubmitting()"
         >
-          {{ isSubmitting() ? 'Creating your account...' : 'Create account' }}
+          {{
+            isSubmitting()
+              ? 'Creating your account...'
+              : isManagerCreation
+                ? 'Create manager account'
+                : 'Create account'
+          }}
         </button>
       </form>
     }
 
-    @if (!successMessage()) {
+    @if (!successMessage() && !isManagerCreation) {
       <p class="login-prompt">Already have an account? <a routerLink="/login">Sign in</a>.</p>
     }
   </section>

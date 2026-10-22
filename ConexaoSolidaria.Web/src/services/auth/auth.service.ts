@@ -12,7 +12,7 @@ export enum UserRole {
 
 const API_ROLE_CLAIMS: Record<UserRole, readonly string[]> = {
   [UserRole.Donor]: ['Donor', 'Doador'],
-  [UserRole.OrganizationManager]: ['OrganizationManager', 'GestorOng'],
+  [UserRole.OrganizationManager]: ['OrganizationManager', 'GestorOng', 'NGOManager'],
 };
 
 @Injectable({ providedIn: 'root' })

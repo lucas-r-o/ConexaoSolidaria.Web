@@ -1,7 +1,7 @@
 import '@angular/compiler';
 import { FormControl } from '@angular/forms';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
 import { describe, expect, it, vi } from 'vitest';
 import { RegistrationComponent, brazilianTaxIdValidator } from './registration.component';
@@ -28,6 +28,7 @@ describe('RegistrationComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RegistrationComponent, RouterModule.forRoot([])],
       providers: [
+        { provide: ActivatedRoute, useValue: { snapshot: { data: {} } } },
         {
           provide: UserService,
           useValue: { register: vi.fn(() => of('Usuário cadastrado com sucesso')) },
@@ -50,5 +51,39 @@ describe('RegistrationComponent', () => {
     expect(fixture.nativeElement.querySelector('[role="status"]').textContent).toContain(
       'Usuário cadastrado com sucesso',
     );
+  });
+
+  it('uses the manager-only API when creating an organization manager', async () => {
+    const createManager = vi.fn(() => of('Gestor cadastrado com sucesso'));
+    const register = vi.fn(() => of('Usuário cadastrado com sucesso'));
+    await TestBed.configureTestingModule({
+      imports: [RegistrationComponent, RouterModule.forRoot([])],
+      providers: [
+        { provide: ActivatedRoute, useValue: { snapshot: { data: { managerCreation: true } } } },
+        {
+          provide: UserService,
+          useValue: { register, createManager },
+        },
+      ],
+    }).compileComponents();
+
+    const fixture = TestBed.createComponent(RegistrationComponent);
+    const component = fixture.componentInstance;
+    component.registrationForm.setValue({
+      fullName: 'Manager User',
+      email: 'manager@example.com',
+      taxId: '52998224725',
+      password: 'Example-password1!',
+    });
+    component.register();
+    fixture.detectChanges();
+
+    expect(createManager).toHaveBeenCalledWith({
+      name: 'Manager User',
+      email: 'manager@example.com',
+      taxId: '52998224725',
+      passwordHash: 'Example-password1!',
+    });
+    expect(register).not.toHaveBeenCalled();
   });
 });

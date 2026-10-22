@@ -8,7 +8,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { RegistrationRequestDto } from '../../services/users/registration.dto';
 import { UserService } from '../../services/users/user.service';
@@ -61,7 +61,9 @@ export class RegistrationComponent {
   private readonly formBuilder = inject(FormBuilder);
   private readonly userService = inject(UserService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly route = inject(ActivatedRoute);
 
+  readonly isManagerCreation = this.route.snapshot.data['managerCreation'] === true;
   readonly isSubmitting = signal(false);
   readonly successMessage = signal<string | null>(null);
   readonly errorMessage = signal<string | null>(null);
@@ -89,8 +91,11 @@ export class RegistrationComponent {
 
     this.errorMessage.set(null);
     this.isSubmitting.set(true);
-    this.userService
-      .register(request)
+    const registration = this.isManagerCreation
+      ? this.userService.createManager(request)
+      : this.userService.register(request);
+
+    registration
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         finalize(() => this.isSubmitting.set(false)),

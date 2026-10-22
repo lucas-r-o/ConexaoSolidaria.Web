@@ -37,6 +37,9 @@ describe('AuthService role access', () => {
     getPayload.mockReturnValue({ role: 'OrganizationManager' });
     expect(authService.hasRole(UserRole.OrganizationManager)).toBe(true);
 
+    getPayload.mockReturnValue({ role: 'NGOManager' });
+    expect(authService.hasRole(UserRole.OrganizationManager)).toBe(true);
+
     getPayload.mockReturnValue({ role: '1' });
     expect(authService.hasRole(UserRole.OrganizationManager)).toBe(false);
   });

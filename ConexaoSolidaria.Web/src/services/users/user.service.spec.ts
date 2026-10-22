@@ -46,6 +46,25 @@ describe('UserService', () => {
     });
   });
 
+  it('sends manager creation with authorization and without a client-supplied role', async () => {
+    const request: RegistrationRequestDto = {
+      name: 'Manager User',
+      email: 'manager@example.com',
+      taxId: '52998224725',
+      passwordHash: 'Example-password1!',
+    };
+    httpPost.mockReturnValue(of('Usuário cadastrado com sucesso'));
+
+    await expect(firstValueFrom(userService.createManager(request))).resolves.toBe(
+      'Usuário cadastrado com sucesso',
+    );
+
+    expect(httpPost).toHaveBeenCalledWith(`${environment.apiUrl}/usuarios/gestores`, request, {
+      headers: expect.objectContaining({ Authorization: expect.any(String) }),
+      responseType: 'text',
+    });
+  });
+
   it('sends donation fields using the API contract with authorization', async () => {
     const donation: DonationRequestDto = {
       campaignId: 'campaign-id',

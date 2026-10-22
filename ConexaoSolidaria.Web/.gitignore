@@ -73,3 +73,5 @@ venv/
 # Keys / certificates
 *.pem
 *.key
+
+bin/

@@ -58,4 +58,25 @@ describe('HomeComponent', () => {
     expect(donateLink).toBeTruthy();
     expect(donateLink.getAttribute('href')).toBe('/donate?campaign=campaign-id');
   });
+
+  it('shows an edit link with the campaign ID for organization managers', () => {
+    component.isOrganizationManager.set(true);
+    fixture.detectChanges();
+
+    const editLink: HTMLAnchorElement = fixture.nativeElement.querySelector(
+      '.campaign-action[aria-label="Edit Community garden"]',
+    );
+    expect(editLink).toBeTruthy();
+    expect(editLink.getAttribute('href')).toBe('/campaigns/update/campaign-id');
+  });
+
+  it('shows the manager account creation link to organization managers', () => {
+    component.isOrganizationManager.set(true);
+    fixture.detectChanges();
+
+    const createManagerLink: HTMLAnchorElement = fixture.nativeElement.querySelector(
+      'nav a[href="/users/create-manager"]',
+    );
+    expect(createManagerLink.textContent.trim()).toBe('Create manager account');
+  });
 });

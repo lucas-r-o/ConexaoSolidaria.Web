@@ -16,6 +16,14 @@ export class UserService {
     return this.http.post(`${environment.apiUrl}/doacao`, request, { responseType: 'text' });
   }
 
+  createManager(request: RegistrationRequestDto): Observable<string> {
+    const headers = this.authService.getAuthorizationHeader();
+    return this.http.post(`${environment.apiUrl}/usuarios/gestores`, request, {
+      headers,
+      responseType: 'text',
+    });
+  }
+
   donate(donation: DonationRequestDto): Observable<DonationResponseDto> {
     const headers = this.authService.getAuthorizationHeader();
     return this.http.post<DonationResponseDto>(`${environment.apiUrl}/usuarios/doar`, donation, {

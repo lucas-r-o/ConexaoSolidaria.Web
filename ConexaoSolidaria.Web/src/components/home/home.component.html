@@ -8,6 +8,7 @@
       }
       @if (isOrganizationManager()) {
         <a routerLink="/campaigns/create">Create campaign</a>
+        <a routerLink="/users/create-manager">Create manager account</a>
       }
       @if (!isLoggedIn()) {
         <a routerLink="/login">Sign in</a>

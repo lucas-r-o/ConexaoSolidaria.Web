@@ -19,6 +19,12 @@ const routes: Routes = [
     component: RegistrationComponent,
   },
   {
+    path: 'users/create-manager',
+    component: RegistrationComponent,
+    canActivate: [authenticationGuard, roleGuard],
+    data: { role: UserRole.OrganizationManager, managerCreation: true },
+  },
+  {
     path: 'donate',
     component: DonationComponent,
     canActivate: [authenticationGuard, roleGuard],
