@@ -7,6 +7,11 @@ import { UpdateCampaignRequestDto } from '../../services/campaigns/update-campai
 import { PublicCampaignDto } from '../../services/campaigns/public-campaign.dto';
 import { CampaignService } from '../../services/campaigns/campaign.service';
 import { CampaignStatus } from '../../services/campaigns/campaign-status.enum';
+import {
+  CAMPAIGN_DESCRIPTION_VALIDATORS,
+  CAMPAIGN_FINANCIAL_GOAL_VALIDATORS,
+  CAMPAIGN_TITLE_VALIDATORS,
+} from './campaign-form.validators';
 
 @Component({
   selector: 'app-update-campaign',
@@ -35,20 +40,9 @@ export class UpdateCampaignComponent {
   ];
 
   readonly campaignForm = this.formBuilder.group({
-    title: this.formBuilder.nonNullable.control('', [
-      Validators.required,
-      Validators.maxLength(100),
-      Validators.pattern(/\S/),
-    ]),
-    description: this.formBuilder.nonNullable.control('', [
-      Validators.required,
-      Validators.maxLength(500),
-      Validators.pattern(/\S/),
-    ]),
-    financialGoal: this.formBuilder.nonNullable.control(0, [
-      Validators.required,
-      Validators.min(0.01),
-    ]),
+    title: this.formBuilder.nonNullable.control('', CAMPAIGN_TITLE_VALIDATORS),
+    description: this.formBuilder.nonNullable.control('', CAMPAIGN_DESCRIPTION_VALIDATORS),
+    financialGoal: this.formBuilder.nonNullable.control(0, CAMPAIGN_FINANCIAL_GOAL_VALIDATORS),
     status: this.formBuilder.control<CampaignStatus | null>(null, Validators.required),
     endDate: this.formBuilder.nonNullable.control(''),
   });

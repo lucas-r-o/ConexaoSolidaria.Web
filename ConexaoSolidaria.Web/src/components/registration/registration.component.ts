@@ -12,6 +12,7 @@ import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { RegistrationRequestDto } from '../../services/users/registration.dto';
 import { UserService } from '../../services/users/user.service';
+import { extractHttpErrorMessage } from '../../shared/http-error-message';
 
 const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$/;
 
@@ -101,36 +102,13 @@ export class RegistrationComponent {
   }
 
   private getErrorMessage(error: unknown): string {
-    if (!(error instanceof HttpErrorResponse)) {
-      return 'Registration could not be completed. Please try again.';
+    const message = extractHttpErrorMessage(error);
+    if (message) {
+      return message;
     }
 
-    const body: unknown = error.error;
-    if (typeof body === 'string' && body.trim()) {
-      return body;
-    }
-
-    if (this.isRecord(body)) {
-      const detail = body['detail'] ?? body['title'] ?? body['message'];
-      if (typeof detail === 'string' && detail.trim()) {
-        return detail;
-      }
-
-      const errors = body['errors'];
-      if (this.isRecord(errors)) {
-        const messages = Object.values(errors)
-          .flatMap((value) => (Array.isArray(value) ? value : []))
-          .filter((value): value is string => typeof value === 'string');
-        if (messages.length > 0) {
-          return messages.join(' ');
-        }
-      }
-    }
-
-    return 'Registration could not be completed. Check your details and try again.';
-  }
-
-  private isRecord(value: unknown): value is Record<string, unknown> {
-    return typeof value === 'object' && value !== null;
+    return error instanceof HttpErrorResponse
+      ? 'Registration could not be completed. Check your details and try again.'
+      : 'Registration could not be completed. Please try again.';
   }
 }

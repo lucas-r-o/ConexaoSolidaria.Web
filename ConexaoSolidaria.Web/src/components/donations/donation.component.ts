@@ -1,6 +1,5 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth/auth.service';
@@ -8,6 +7,7 @@ import { CampaignService } from '../../services/campaigns/campaign.service';
 import { PublicCampaignDto } from '../../services/campaigns/public-campaign.dto';
 import { UserService } from '../../services/users/user.service';
 import { DonationRequestDto } from '../../services/users/donation.dto';
+import { extractHttpErrorMessage } from '../../shared/http-error-message';
 
 @Component({
   selector: 'app-donation',
@@ -96,34 +96,11 @@ export class DonationComponent implements OnInit {
         },
         error: (error: unknown) => {
           this.isSubmitting.set(false);
-          this.errorMessage.set(this.getErrorMessage(error));
+          this.errorMessage.set(
+            extractHttpErrorMessage(error, ['mensagem', 'detail', 'title']) ??
+              'An error occurred while processing the donation.',
+          );
         },
       });
-  }
-
-  private getErrorMessage(error: unknown): string {
-    if (!(error instanceof HttpErrorResponse)) {
-      return 'An error occurred while processing the donation.';
-    }
-
-    const body: unknown = error.error;
-    if (typeof body === 'string' && body.trim()) {
-      return body;
-    }
-
-    if (this.isRecord(body)) {
-      for (const key of ['mensagem', 'detail', 'title']) {
-        const message = body[key];
-        if (typeof message === 'string' && message.trim()) {
-          return message;
-        }
-      }
-    }
-
-    return 'An error occurred while processing the donation.';
-  }
-
-  private isRecord(value: unknown): value is Record<string, unknown> {
-    return typeof value === 'object' && value !== null;
   }
 }
