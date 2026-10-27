@@ -17,8 +17,10 @@ Browser (Angular)
 ```
 
 - **Frontend:** this repository.
-- **API:** repository `../ConexaoSolidaria`, project `src/ConexaoSolidaria.API`.
-- **Worker:** repository `../ConexaoSolidaria.Worker`, project `ConexaoSolidaria.Worker`.
+- **API consumed by this frontend:** [Conexao-Solidaria](https://github.com/lucas-r-o/Conexao-Solidaria), project `src/ConexaoSolidaria.API`.
+- **Worker consumed by the asynchronous flow:** [ConexaoSolidaria.Worker](https://github.com/lucas-r-o/ConexaoSolidaria.Worker), project `ConexaoSolidaria.Worker`.
+
+The frontend communicates directly with the API, not with the Worker. The API publishes donation events through RabbitMQ and the Worker processes those events to update campaign amounts and send the resulting updates back to the API.
 - **Database:** PostgreSQL, normally configured through the Supabase connection strings in each application's development configuration.
 - **Message broker:** RabbitMQ on port `5672`; its management interface defaults to `http://localhost:15672`.
 
