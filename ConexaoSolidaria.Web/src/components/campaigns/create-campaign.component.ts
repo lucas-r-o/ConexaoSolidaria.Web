@@ -43,10 +43,10 @@ export class CreateCampaignComponent {
 
     const formValue = this.campaignForm.getRawValue();
     const request: CreateCampaignRequestDto = {
-      titulo: formValue.title.trim(),
-      descricao: formValue.description.trim(),
-      metaFinanceira: formValue.financialGoal,
-      dataFim: formValue.endDate || null,
+      Title: formValue.title.trim(),
+      Description: formValue.description.trim(),
+      FinancialGoal: formValue.financialGoal,
+      EndDate: formValue.endDate || null,
     };
 
     this.errorMessage.set(null);

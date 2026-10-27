@@ -1,9 +1,9 @@
 import { CampaignStatus } from './campaign-status.enum';
 
 export interface UpdateCampaignRequestDto {
-  Titulo: string;
-  Descricao: string;
-  MetaFinanceira: number;
+  Title: string;
+  Description: string;
+  FinancialGoal: number;
   Status: CampaignStatus;
-  DataFim: string | null;
+  EndDate: string | null;
 }

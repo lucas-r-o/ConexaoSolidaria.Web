@@ -101,11 +101,11 @@ export class UpdateCampaignComponent {
     }
 
     const request: UpdateCampaignRequestDto = {
-      Titulo: formValue.title.trim(),
-      Descricao: formValue.description.trim(),
-      MetaFinanceira: formValue.financialGoal,
+      Title: formValue.title.trim(),
+      Description: formValue.description.trim(),
+      FinancialGoal: formValue.financialGoal,
       Status: formValue.status,
-      DataFim: formValue.endDate ? `${formValue.endDate}T00:00:00` : null,
+      EndDate: formValue.endDate ? `${formValue.endDate}T00:00:00` : null,
     };
 
     this.saveErrorMessage.set('');

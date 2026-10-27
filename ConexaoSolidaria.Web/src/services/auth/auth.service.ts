@@ -58,7 +58,7 @@ export class AuthService {
 
   getAuthorizationHeader(): { Authorization: string } | undefined {
     const token = localStorage.getItem(this.tokenStorageKey);
-    return token ? { Authorization: `Bearer ${token}` } : undefined;
+    return token ? { Authorization: 'Bearer ' + token } : undefined;
   }
 }
 

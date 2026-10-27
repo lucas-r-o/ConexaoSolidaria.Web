@@ -1,6 +1,6 @@
 export interface CreateCampaignRequestDto {
-  titulo: string;
-  descricao: string;
-  metaFinanceira: number;
-  dataFim: string | null;
+  Title: string;
+  Description: string;
+  FinancialGoal: number;
+  EndDate: string | null;
 }

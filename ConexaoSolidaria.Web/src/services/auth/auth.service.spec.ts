@@ -50,6 +50,15 @@ describe('AuthService role access', () => {
     expect(authService.hasRole(UserRole.Donor)).toBe(true);
   });
 
+  it('adds the Bearer token only when an authenticated session exists', () => {
+    localStorage.removeItem('token');
+    expect(authService.getAuthorizationHeader()).toBeUndefined();
+
+    localStorage.setItem('token', 'jwt-token');
+    expect(authService.getAuthorizationHeader()).toEqual({ Authorization: 'Bearer jwt-token' });
+    localStorage.removeItem('token');
+  });
+
   it('uses the existing API login endpoint and request fields', async () => {
     const credentials = { email: 'person@example.com', password: 'Example-password1!' };
 
